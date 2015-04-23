@@ -1,162 +1,209 @@
-'use strict';
-
+/*global require, document*/
+var $ = require('jquery');
+var _ = require('lodash');
 var assert = require('assert');
 var c3 = require('c3');
 var moment = require('moment');
-var $ = require('jquery');
+var resumeData = require('./resume.json');
 
-// from: YYYY-MM, to: YYYY-MM
-function Range(start, end) {
-  assert(this.start <= this.end);
-  this.start = start
-  this.end = end
+function Range(start, end, job) {
+  'use strict';
+  assert(start instanceof Date);
+  assert(end instanceof Date);
+  assert(start <= end);
+  this.start = start;
+  this.end = end;
+  this.job = job;
 }
 
-Range.prototype = {
-  fromJson: function(json) {
-    asser(json.start && json.end);
-    var toDate = function (d) {
-      assert(d.length === 7);
-      return new Date(start.substr(0, 4), start.substr(5, 7));
-    }
-    return new Range(toDate(json.start), toDate(json.end));
-  },
+Range.now = function () {
+  'use strict';
+  var now = new Date();
+  return new Range(now, now);
+};
 
-  containsDate: function(d) {
+Range.fromJson = function (json) {
+  'use strict';
+  assert(json.start && json.end && json.job);
+  var toDate = function (d) {
+    if (d === 'now') { return new Date(); }
+    assert(d.length === 7, 'Date not of the form YYYY-MM: ' + d);
+    // Months of Date object are 0-11, so subtract 1
+    return new Date(d.substr(0, 4), d.substr(5, 7) - 1);
+  };
+  return new Range(toDate(json.start), toDate(json.end), json.job);
+};
+
+Range.prototype = {
+  containsDate: function (d) {
+    'use strict';
+    assert (d instanceof Date);
     return this.start <= d && d <= this.end;
   },
 
-  merge: function(other) {
-    return new Range(min(this.start, other.start), max(this.end, other.end));
+  merge: function (other) {
+    'use strict';
+    assert (other instanceof Range);
+    var start = this.start < other.start ? this.start : other.start;
+    var end = this.end > other.end ? this.end : other.end;
+    return new Range(start, end);
   },
 
-  axisArray: function() {
+  months: function () {
+    'use strict';
+    var i = new Date(this.start.getTime());
+    var months = [];
+    while (+i <= +this.end) {
+      months.push(new Date(i.getTime()));
+      i.setMonth(i.getMonth() + 1);
+    }
+    return months;
+  },
+
+  axisArray: function () {
+    'use strict';
     var arr = ['x'];
-    var from = new Date(this.from.getTime());
-    while (from < this.to) {
-      arr.push(moment(from).format('YYYY-MM'));
-      from.setMonth(from.getMonth() + 1);
+    var start = new Date(this.start.getTime());
+    while (start < this.end) {
+      arr.push(moment(start).format('YYYY-MM'));
+      start.setMonth(start.getMonth() + 1);
     }
     return arr;
   }
-}
+};
 
 function Tool(data) {
-  assert(data.name && data.dates, 'Illegal data')
-  this.data = data
-  this.ranges = _.map(function (d) { return new Range(d); }, data.dates)
+  'use strict';
+  assert(data.name && data.dates, 'Illegal data');
+  this.data = data;
+  this.ranges = _.map(data.dates, function (d) {
+    return Range.fromJson(d);
+  });
+  this.kind = data.kind;
 }
 
 Tool.prototype = {
   id: function () {
-    if (this.id) { return id; }
-    else if (this.name) { return this.name; }
-    else assert(false, 'No name or id')
+    'use strict';
+    return this.data.id || this.data.name;
   },
 
-  name: function () { return this.name; },
+  name: function () {
+    'use strict';
+    return this.data.name;
+  },
 
-  range: function() {
+  range: function () {
+    'use strict';
     return _.reduce(this.ranges, function (r1, r2) { return r1.merge(r2); });
   },
 
-  usedDuringMonth: function (d) {
-    return _.some(this.ranges, function (r) { return r.containsDate(d); });
+  rangeOfMonth: function (d) {
+    'use strict';
+    assert (d instanceof Date);
+    return _.find(this.ranges, function (r) { return r.containsDate(d); });
+  },
+
+  monthArray: function (range, value) {
+    'use strict';
+    assert (range instanceof Range);
+    var tool = this;
+    // The column data begins with the id of the tool.  E.g.
+    // ['Docker', null, null, 3, 3, 3, ...]
+    var arr = [this.id()];
+    _.each(range.months(), function (m) {
+      arr.push(tool.rangeOfMonth(m) ? value : null);
+    });
+    return arr;
+  },
+
+  jobOfIndex: function (range, index) {
+    'use strict';
+    assert (range instanceof Range);
+    return this.rangeOfMonth(range.months()[index]).job;
   }
+};
+
+function ToolSet(json, kind) {
+  'use strict';
+  var allTools = _.map(json, function (t) { return new Tool(t); });
+  this.tools = kind ? _.filter(allTools, function (t) { return t.kind === kind; }) : allTools;
 }
 
-var data = {
-  "tools": [
+ToolSet.prototype = {
+  length: function () {
+    'use strict';
+    return this.tools.length;
+  },
 
-    {"name": "Ansible",
-     "dates": [
-       {"start": "20140801",
-        "end": "now"}],
-     "comments": "Awesome"
-    },
+  range: function () {
+    'use strict';
+    return _.reduce(this.tools, function (r, t) {
+      return r.merge(t.range());
+    }, Range.now());
+  },
 
-    {"name": "C++",
-     "dates": [
-       {"start": "20120101",
-        "end": "201404"}],
-     "comments": "Awesome"
-    },
+  names: function () {
+    'use strict';
+    return _.reduce(this.tools, function (obj, t) {
+      obj[t.id()] = t.name();
+      return obj;
+    }, {});
+  },
 
-    {"name": "Docker",
-     "dates": [
-       {"start": "20140401",
-        "end": "now"}],
-     "comments": "Awesome"
+  columns: function () {
+    'use strict';
+    var range = this.range();
+    var cols = [range.axisArray()];
+    for (var i = 0; i < this.tools.length; i++) {
+      cols.push(this.tools[i].monthArray(range, i));
     }
+    return cols;
+  },
 
-  // ,
+  tooltip: function (value, index) {
+    'use strict';
+    return this.tools[value].jobOfIndex(this.range(), index) || '';
+  },
 
-  // "Standard ML": {
-  //   "start": "1998",
-  //   "end": "now",
-  //   "comments": "Awesome"
-  // },
-
-  // "Ocaml": {
-  //   "start": "2010",
-  //   "end": "2012",
-  //   "comments": "Awesome"
-  // },
-
-  // "Puppet": {
-  //   "start": "201404",
-  //   "end": "201408",
-  //   "comments": "Awesome"
-  // },
-
-  // "Python": {
-  //   "start": "2012",
-  //   "end": "now",
-  //   "comments": "Awesome"
-  // }
-
-  ]
+  chart: function(bindto) {
+    'use strict';
+    var toolset = this;
+    return c3.generate({
+      bindto: bindto,
+      data: {
+        names: this.names(),
+        x: 'x',
+        xFormat: '%Y-%m',
+        columns: this.columns()
+      },
+      tooltip: {
+        format: {
+          value: function (value, ratio, id, index) {
+            return toolset.tooltip(value, index);
+          }
+        }
+      },
+      axis: {
+        x: {
+          type: 'timeseries',
+          tick: {
+            format: '%Y-%m'
+          }
+        },
+        y: {
+          show: false,
+          tick: {
+            values: _.range(this.length())
+          }
+        }
+      }
+    });
+  }
 };
 
 $(document).ready(function () {
-  var chart = c3.generate({
-    bindto: '#tools',
-    data: {
-      names: {
-        cpp: 'C++'
-      },
-      x: 'x',
-      xFormat: '%Y-%m',
-      columns: [
-        ['x', '2013-10', '2013-11', '2013-12', '2014-01', '2014-02', '2014-03'],
-        ['Docker', null, null, null, 1, 1, null],
-        ['Python', 2, 2, null, null, 2, 2],
-        ['cpp', null, null, null, 3, 3, 3]
-      ]
-    },
-    tooltip: {
-      format: {
-        value: function (value, ratio, id, index) {
-          return '';
-        }
-      }
-    },
-    axis: {
-      x: {
-        type: 'timeseries',
-        tick: {
-          format: '%Y-%m'
-        }
-      },
-      y: {
-        show: false,
-        tick: {
-          values: [1, 2, 3]
-        },
-        max: 3,
-        min: 1
-        // padding: {top:0, bottom:0}
-      }
-    }
-  });
+  'use strict';
+  new ToolSet(resumeData.tools, 'Languages').chart('#languages');
+  new ToolSet(resumeData.tools, 'Tools').chart('#tools');
 });

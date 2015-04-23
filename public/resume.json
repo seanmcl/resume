@@ -1,0 +1,161 @@
+{"tools": [
+  {"name": "Ansible",
+   "kind": "Tools",
+   "dates": [
+     {"start": "2014-08",
+      "end": "now",
+      "job": "Engineers Gate"}]
+  },
+
+  {"name": "C++",
+   "kind": "Languages",
+   "id": "cpp",
+   "dates": [
+     {"start": "2012-10",
+      "end": "2014-04",
+      "job": "Google"}]
+  },
+
+  {"name": "Chronos",
+   "kind": "Tools",
+   "dates": [
+     {"start": "2014-04",
+      "end": "now",
+      "job": "Engineers Gate"}]
+  },
+
+  {"name": "Coq",
+   "kind": "Languages",
+   "dates": [
+     {"start": "2006-06",
+      "end": "2006-09",
+      "job": "Microsoft"}]
+  },
+
+  {"name": "Docker",
+   "kind": "Tools",
+   "dates": [
+     {"start": "2014-04",
+      "end": "now",
+      "job": "Engineers Gate"}]
+  },
+
+  {"name": "AWS",
+   "kind": "Tools",
+   "dates": [
+     {"start": "2014-04",
+      "end": "now",
+      "job": "Engineers Gate"}]
+  },
+
+  {"name": "Haproxy",
+   "kind": "Tools",
+   "dates": [
+     {"start": "2014-04",
+      "end": "now",
+      "job": "Engineers Gate"}]
+  },
+
+  {"name": "Haskell",
+   "kind": "Languages",
+   "dates": [
+     {"start": "2008-01",
+      "end": "2010-06",
+      "job": "CMU"}]
+  },
+
+  {"name": "Java",
+   "kind": "Languages",
+   "dates": [
+     {"start": "2001-06",
+      "end": "2002-08",
+      "job": "EventMonitor"},
+     {"start": "2002-06",
+      "end": "2002-08",
+      "job": "IBM"},
+     {"start": "2004-06",
+      "end": "2004-09",
+      "job": "Intel"},
+     {"start": "2014-04",
+      "end": "now",
+      "job": "Engineers Gate"}]
+  },
+
+  {"name": "Javascript",
+   "kind": "Languages",
+   "dates": [
+     {"start": "2013-08",
+      "end": "2013-12",
+      "job": "Google"},
+     {"start": "2014-08",
+      "end": "now",
+      "job": "Engineers Gate"}]
+  },
+
+  {"name": "Marathon",
+   "kind": "Tools",
+   "dates": [
+     {"start": "2014-04",
+      "end": "now",
+      "job": "Engineers Gate"}]
+  },
+
+  {"name": "Mesos",
+   "kind": "Tools",
+   "dates": [
+     {"start": "2014-04",
+      "end": "now",
+      "job": "Engineers Gate"}]
+  },
+
+  {"name": "OCaml",
+   "kind": "Languages",
+   "dates": [
+     {"start": "2003-06",
+      "end": "2003-08",
+      "job": "Jane St"},
+     {"start": "2006-06",
+      "end": "2006-09",
+      "job": "Microsoft"},
+     {"start": "2010-08",
+      "end": "2012-10",
+      "job": "Jane Street"}]
+  },
+
+  {"name": "Puppet",
+   "kind": "Tools",
+   "dates": [
+     {"start": "2014-04",
+      "end": "2014-08",
+      "job": "Engineers Gate"}]
+  },
+
+  {"name": "Nginx",
+   "kind": "Tools",
+   "dates": [
+     {"start": "2014-04",
+      "end": "now",
+      "job": "Engineers Gate"}]
+  },
+
+  {"name": "Python",
+   "kind": "Languages",
+   "dates": [
+     {"start": "2012-10",
+      "end": "2014-04",
+      "job": "Google"},
+     {"start": "2014-04",
+      "end": "now",
+      "job": "Engineers Gate"}]
+  },
+
+  {"name": "Standard ML",
+   "kind": "Languages",
+   "id": "sml",
+   "dates": [
+     {"start": "2005-09",
+      "end": "2010-08",
+      "job": "CMU"}]
+  }
+]
+}
