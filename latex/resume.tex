@@ -1,0 +1,246 @@
+%%% LaTeX Template: Designer's CV
+%%%
+%%% Source: http://www.howtotex.com/
+%%% Feel free to distribute this template, but please keep the referal to HowToTeX.com.
+%%% Date: March 2012
+
+\documentclass[a4paper,12pt,final]{memoir}
+
+% misc
+\renewcommand{\familydefault}{bch}	% font
+\pagestyle{empty} % no pagenumbering
+\setlength{\parindent}{0pt} % no paragraph indentation
+
+% required packages (add your own)
+\usepackage{flowfram} % column layout
+\usepackage[top=1cm,left=1cm,right=1cm,bottom=1cm]{geometry} % margins
+\usepackage{graphicx} % figures
+\usepackage{url} % URLs
+\usepackage[usenames,dvipsnames]{xcolor} % color
+\usepackage{multicol} % columns env.
+\setlength{\multicolsep}{0pt}
+\usepackage{paralist} % compact lists
+\usepackage{tikz}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Create column layout
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% define length commands
+\setlength{\vcolumnsep}{\baselineskip}
+\setlength{\columnsep}{\vcolumnsep}
+
+% frame setup (flowfram package)
+% left frame
+% \newflowframe{0.1\textwidth}{\textheight}{0pt}{0pt}[left]
+\newlength{\LeftMainSep}
+\setlength{\LeftMainSep}{2em}
+% \addtolength{\LeftMainSep}{2\columnsep}
+% % right frame
+\newflowframe{0.9\textwidth}{\textheight}{\LeftMainSep}{0pt}[main01]
+
+% horizontal rule between frames (using TikZ)
+\renewcommand{\ffvrule}[3]{%
+  \hfill
+  \tikz{%
+    \draw[loosely dotted,color=RoyalBlue,line width=1.5pt,yshift=-#1]
+    (0,0) -- (0pt,#3);}%
+  \hfill\mbox{}}
+%\insertvrule{flow}{1}{flow}{2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% define macros (for convience)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\Sep}{\vspace{1.5em}}
+\newcommand{\SmallSep}{\vspace{0.5em}}
+
+\newcommand{\CVSection}[1]
+{\Large\textbf{#1}\par
+  \SmallSep\normalsize\normalfont}
+
+\newcommand{\CVItem}[1]
+{\textbf{\color{RoyalBlue} #1}}
+
+\newcommand{\CPP}{C\hspace{-2pt}+\hspace{-4pt}+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Begin document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+
+% Right frame
+%%%%%%%%%%%%%%%%%%%%
+
+\Huge\bfseries {\color{RoyalBlue}Sean McLaughlin}\\
+\large\bfseries {\color{RoyalBlue}Software Engineer}
+\normalsize\normalfont
+
+\begin{flushright}\small
+  \vspace{-3em}
+  \begin{tabular}{l}
+    \url{seanmcl@gmail.com}\\
+    \url{https://github.com/seanmcl}\\
+    \url{https://www.linkedin.com/in/mclaughlins}\\
+    (718) 483-0902
+  \end{tabular}
+\end{flushright}\normalsize
+
+\normalsize\normalfont
+
+\vspace{-1em}
+
+% Summary
+\CVSection{Summary}
+I love designing and implementing real software systems.  It is the
+confluence of beautiful abstractions with real world applications that
+I find the most challenging and rewarding in my work.  For example, I
+am partial to mechanized correctness proofs, first-class functions,
+immutable data, and rich type systems.  But I also love building a
+Mesos cluster on AWS from scratch to analyze a bunch of data, and
+debugging low level network problems when things go wrong.
+I am seeking a position where I can use my enthusiasm,
+knowledge, and experience at all levels of the software stack to solve
+hard real-world problems.
+
+% Experience
+\CVSection{Work Experience}
+\CVItem{April 2014 - Present, Engineers Gate LP}\\
+Systems engineer.  Engineers Gate is a startup hedge fund (7
+engineers) specializing in medium and high frequency electronic
+trading.  My team handles market data and research infrastructure.  My
+duties include provisioning and managing our production EC2 cluster,
+containerizing, deploying, securing and monitoring over 40
+services, and writing the bulk of our web dashboards. I also manage a small
+team of contractors who help with system and network administration.
+(Scala, Python, Java, Javascript, HTML, CSS, Scala.js, Docker, Ansible, AWS,
+Mesos, Marathon, Chronos)
+\SmallSep
+
+\CVItem{October 2012 - April 2014, Google}\\
+Software engineer, Google Maps.  I worked on the machine learning
+team responsible for clustering local businesses with data
+from disparate sources.  I specialized in creating data and visualization
+pipelines using Flume, a stream-based functional programming library
+for specifying mapreduce pipelines.  (\CPP, Python)
+\SmallSep
+
+\CVItem{August 2010 - October 2012, Jane Street Capital}\\
+Software engineer, quantitative research group.
+I built the in-house code review tools, OCaml compiler frontend, and
+worked on a distributed real-time order marking system using the
+OCaml Async futures library.  (OCaml)
+\SmallSep
+
+\CVItem{Summer 2009, National Science Foundation} \\
+Taught courses on functional programming and theorem proving, Hanoi,
+Vietnam. (OCaml, HOL Light)
+\SmallSep
+
+\CVItem{Summer 2007, Microsoft/INRIA} \\
+I worked on the formalization of Galois Theory in the Coq proof
+assistant. (OCaml, Coq)
+\SmallSep
+
+\CVItem{Summer 2004, Intel} \\
+I worked on theorem-prover-based static analysis in the internal
+reFLect programming language, used by Intel to verify hardware
+designs. (CVC, reFLect)
+\SmallSep
+
+\CVItem{Summer 2002, IBM} \\
+I wrote a compiler for an XML-based database query language. (Java)
+\SmallSep
+
+\CVItem{June 2001 - July 2002, Eventmonitor, Inc.} \\
+Software engineer at a financial software startup. (Java)
+\SmallSep
+
+\CVSection{Selected Publications}
+
+\CVItem{The Dodecahedral Conjecture} \\
+Solves a problem in discrete geometry originally posed in 1943.\\
+Journal of the American Mathematical Society, 2010
+\SmallSep
+
+\CVItem{Efficient Intuitionistic Theorem Proving with the Polarized Inverse Method}\\
+Conference on Automated Deduction, 2009
+\SmallSep
+
+\CVItem{Imogen: Focusing the Polarized Inverse Method for Intuitionistic Propositional Logic}\\
+Logic for Programming, Artificial Intelligence and Reasoning, 2008
+\SmallSep
+
+\CVItem{An interpretation of Isabelle/HOL in HOL Light}\\
+International Joint Conference on Automated Reasoning, 2006
+\SmallSep
+
+\CVItem{A Proof Producing Decision Procedure for Real Arithmetic}\\
+Conference on Automated Deduction, 2005
+\SmallSep
+
+\CVSection{Open Source Projects}
+\CVItem{Imogen} \url{https://github.com/seanmcl/imogen}\\
+A theorem prover for intuitionistic logics (Standard ML, Haskell)
+
+\SmallSep
+
+% Education
+\CVSection{Education}
+\CVItem{2004 -, Carnegie Mellon University}\\
+Ph.D. candidate in Computer Science.  (Currently ABD)
+\SmallSep
+
+\CVItem{2002-2004 - New York University}\\
+Masters in Computer Science
+\SmallSep
+
+\CVItem{1995-2000 - University of Michigan}\\
+Bachelor of Science, Mathematics \\
+Bachelor of Musical Arts, Clarinet performance \\
+\SmallSep
+
+\CVItem{1994-1995 - Interlochen Arts Academy}\\
+
+\CVSection{Awards}
+\CVItem{2000 - AMS, MAA, SIAM Morgan Prize for Outstanding Mathematics Research}
+\SmallSep
+
+\CVSection{Teaching experience}
+
+\CVItem{Carnegie Mellon University}\\
+Teaching Assistant in functional programming and constructive logic.
+\SmallSep
+
+\CVItem{Courant Institute, New York University}\\
+Teaching Assistant in algorithms, programming languages, and
+artificial intelligence.
+\SmallSep
+
+\CVSection{Languages}
+
+\CVItem{Used daily: }
+Scala, Java, Python, JavaScript, HTML, CSS, Bash, Emacs Lisp
+\SmallSep
+
+\CVItem{Favorite:} OCaml, Standard ML, Scala, Haskell
+\SmallSep
+
+\CVItem{Used previously:} \CPP
+\SmallSep
+
+\CVSection{Favorite Tools}
+
+\CVItem{Systems: }
+Zookeeper, Mesos, Marathon, Chronos, Docker, Ansible, ELK, Graphite,
+Sensu, RPM, Nginx, HAProxy
+\SmallSep
+
+\CVItem{Libraries: }
+Scala.js, ReactiveX, D3, Bootstrap, React, Flume
+\SmallSep
+
+\CVItem{AWS: }
+EC2, S3, VPC, Route53, IAM
+\SmallSep
+
+\end{document}

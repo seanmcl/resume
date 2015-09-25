@@ -5,3 +5,5 @@
 /node_modules/
 /.idea/
 /public/bundle.js
+*.fls
+*.pdf
